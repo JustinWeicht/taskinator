@@ -234,47 +234,19 @@ var saveTasks = function() {
 
 var loadTasks = function() {
     //retrieve from local storage
-    var savedTasks = localStorage.getItem("tasks")
-        if (!savedTasks) {
-            return false;
-        }  
+    var savedTasks = localStorage.getItem("tasks");
 
+    if (!savedTasks) {
+            return false;
+    }  
+    // convert string back into readable array
     savedTasks = JSON.parse(savedTasks);
 
-    for (var i = 0; i < savedTasks.length; i++) {
-
-        savedTasks[i].id = taskIdCounter
-
-        var listItemEl = document.createElement("li");
-        listItemEl.className = "task-item";
-        listItemEl.setAttribute("data-task-id", savedTasks[i].id);
-        listItemEl.setAttribute("draggable", "true");
-
-        var taskInfoEl = document.createElement("div");
-        taskInfoEl.className = "task-info";
-        taskInfoEl.innerHTML = "<h3 class='task-name'>" + savedTasks[i].name + "</h3><span class='task-type'>" + savedTasks[i].type + "</span>";
-
-        listItemEl.appendChild(taskInfoEl)
-        var taskActionsEl = createTaskActions(savedTasks[i].id) 
-
-        listItemEl.appendChild(taskActionsEl)
-      
-        if (savedTasks[i].status === "to do") {
-            listItemEl.querySelector("select[name='status-change']").selectedIndex = 0;
-            tasksToDoEl.appendChild(listItemEl)
-        }
-        else if (savedTasks[i].status === "in progress") {
-            listItemEl.querySelector("select[name='status-change']").selectedIndex = 1;
-            tasksInProgressEl.appendChild(listItemEl)
-        }
-        else if (savedTasks[i].status === "completed") {
-            listItemEl.querySelector("select[name='status-change']").selectedIndex = 2;
-            tasksCompletedEl.appendChild(listItemEl)
-        }
-
-        tasks.push(savedTasks[i]);
-        taskIdCounter++
-    }
+    // loop through savedTasks array
+    for (var i = 0; i < savedTasks.length; i++){
+        // pass each tasks object into the 'createTaskEl()' function
+        createTaskEl(savedTasks[i]);
+    }  
 };
 
 loadTasks()
